@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 @Service
 public class PostServiceImpl implements PostService {
     private PostRepository postRepository;
+
     @Autowired
     public PostServiceImpl(PostRepository postRepository) {
         this.postRepository = postRepository;
@@ -26,5 +27,12 @@ public class PostServiceImpl implements PostService {
 //                .collect(Collectors.toList());
         return posts.stream().map(PostMapper::mapToPostDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void createPost(PostDto postDto) {
+        Post post = PostMapper.mapToPost(postDto);
+        postRepository.save(post);
+
     }
 }
