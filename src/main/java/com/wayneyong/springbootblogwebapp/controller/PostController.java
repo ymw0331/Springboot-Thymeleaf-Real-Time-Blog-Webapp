@@ -15,9 +15,7 @@ import java.util.List;
 
 @Controller
 public class PostController {
-
     private PostService postService;
-
     public PostController(PostService postService) {
         this.postService = postService;
     }
@@ -53,7 +51,6 @@ public class PostController {
     //handler method to handle edit post request
     @GetMapping("/admin/posts/{postId}/edit")
     public String editPostFrom(@PathVariable("postId") Long postId, Model model) {
-
         PostDto postDto = postService.findPostById(postId);
         model.addAttribute("post", postDto);
         return "admin/edit_post";
@@ -61,18 +58,22 @@ public class PostController {
 
     //handler method to handle edit post form submit request
     @PostMapping("admin/posts/{postId}")
-    public String updatePost(@PathVariable("postId") Long postId,
-                             @Valid @ModelAttribute("post") PostDto post,
-                             BindingResult result,
-                             Model model) {
+    public String updatePost(@PathVariable("postId") Long postId, @Valid @ModelAttribute("post") PostDto post, BindingResult result, Model model) {
 
         if (result.hasErrors()) {
             model.addAttribute("post", post);
             return "admin/edit_post";
         }
-
         post.setId(postId);
         postService.updatePost(post);
+        return "redirect:/admin/posts";
+    }
+
+
+    //handler method to handle delete post request
+    @GetMapping("/admin/posts/{postId}/delete")
+    public String deletePost(@PathVariable("postId") Long postId) {
+        postService.deletePost(postId);
         return "redirect:/admin/posts";
     }
 
@@ -85,6 +86,5 @@ public class PostController {
         url = url.replaceAll("[^A-Za-z0-9]", "-");
         return url;
     }
-
 
 }
