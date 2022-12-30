@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Data
 @Builder
@@ -24,6 +25,9 @@ public class PostDto {
 
     @NotEmpty(message = "Post short description should not be empty")
     private String shortDescription;
+
     private LocalDateTime createdOn;
     private LocalDateTime updatedOn;
+
+    private Set<CommentDto> comments;
 }
