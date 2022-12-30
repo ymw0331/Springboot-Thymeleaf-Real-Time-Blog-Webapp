@@ -16,6 +16,7 @@ import java.util.List;
 @Controller
 public class PostController {
     private PostService postService;
+
     public PostController(PostService postService) {
         this.postService = postService;
     }
@@ -75,6 +76,16 @@ public class PostController {
     public String deletePost(@PathVariable("postId") Long postId) {
         postService.deletePost(postId);
         return "redirect:/admin/posts";
+    }
+
+    //handler method to handle view post request
+    @GetMapping("/admin/posts/{postUrl}/view")
+    public String viewPost(@PathVariable("postUrl") String postUrl,
+                           Model model){
+        PostDto postDto = postService.findPostByUrl(postUrl);
+        model.addAttribute("post", postDto);
+        return "admin/view_post";
+
     }
 
 
